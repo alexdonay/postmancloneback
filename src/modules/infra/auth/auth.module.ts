@@ -12,20 +12,18 @@ import { UserRepository } from 'src/modules/user/user.repository';
   imports: [
     ConfigModule,
     UserModule,
-    // 2. REGISTRAR O PASSPORTMODULE AQUI
     PassportModule.register({ defaultStrategy: 'jwt' }), 
     JwtModule.registerAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, UserRepository],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1d' }, // Aumentei para 1 dia, 60m é pouco para testes
+        signOptions: { expiresIn: '1d' },
       }),
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, JwtStrategy,UserRepository ],
+  providers: [AuthService, JwtStrategy ],
   controllers: [AuthController],
-  // 3. EXPORTAR O PASSPORTMODULE PARA OUTROS MÓDULOS USAREM
   exports: [PassportModule, JwtStrategy], 
 })
 export class AuthModule {}
