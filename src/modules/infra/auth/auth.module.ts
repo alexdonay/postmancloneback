@@ -1,20 +1,19 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport'; // 1. IMPORTAR O PASSPORTMODULE
+import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
-import { UserModule } from 'src/modules/user/user.module';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
-import { UserRepository } from 'src/modules/user/user.repository';
+import { UserModule } from 'src/modules/user/user.module'; // 1. Importar o UserModule
 
 @Module({
   imports: [
     ConfigModule,
-    UserModule,
-    PassportModule.register({ defaultStrategy: 'jwt' }), 
+    UserModule, // 2. Adicionar UserModule aqui para ter acesso ao UserRepository
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      imports: [ConfigModule, UserRepository],
+      imports: [ConfigModule], // 3. REMOVER UserRepository daqui
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: { expiresIn: '1d' },
@@ -22,8 +21,8 @@ import { UserRepository } from 'src/modules/user/user.repository';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, JwtStrategy ],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
-  exports: [PassportModule, JwtStrategy], 
+  exports: [PassportModule, JwtStrategy],
 })
 export class AuthModule {}
