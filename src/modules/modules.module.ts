@@ -11,6 +11,8 @@ import { WorkspaceModule } from './workspace/workspace.module';
   exports: [
     UserModule,
     WorkspaceModule,
+    UserModule,
+    
   ],
 })
 export class ModulesModule {}
