@@ -19,6 +19,7 @@ import { User } from '../user/user.entity';
 import { GetUser } from '../common/get-user.decorator';
 
 @Controller('workspaces')
+@UseGuards(AuthGuard('jwt'))
 export class WorkspaceController {
   constructor(
     private readonly workspaceRepository: WorkspaceRepository,
