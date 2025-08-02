@@ -1,10 +1,18 @@
 import { Module } from '@nestjs/common';
+import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { InfraModule } from './infra/infra.module';
 import { WorkspaceModule } from './workspace/workspace.module';
-import { RequestGroupModule } from './request-group/request-group.module';
 
 @Module({
-  imports: [UserModule, InfraModule, WorkspaceModule, RequestGroupModule],
+  imports: [
+    AuthModule,      // <-- Tenho quase certeza que esta linha está faltando no seu arquivo.
+    UserModule,
+    WorkspaceModule,
+  ],
+  exports: [
+    AuthModule,
+    UserModule,
+    WorkspaceModule,
+  ],
 })
 export class ModulesModule {}
