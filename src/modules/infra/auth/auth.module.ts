@@ -6,6 +6,7 @@ import { UserModule } from 'src/modules/user/user.module';
 import { AuthService } from './auth.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthController } from './auth.controller';
+import { UserRepository } from 'src/modules/user/user.repository';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { AuthController } from './auth.controller';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy,UserRepository ],
   controllers: [AuthController],
   // 3. EXPORTAR O PASSPORTMODULE PARA OUTROS MÓDULOS USAREM
   exports: [PassportModule, JwtStrategy], 
