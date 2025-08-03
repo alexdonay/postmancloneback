@@ -5,10 +5,19 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { RequestGroup } from '../request-group/requestGroup.entity';
 
-@Entity('request')
+
+export interface AuthenticationPayload {
+  type: 'bearer' | 'basic' | 'none';
+  token?: string;
+  username?: string;
+  password?: string;
+}
+
+@Entity('requests')
 export class Request {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -27,6 +36,9 @@ export class Request {
 
   @Column({ type: 'jsonb', nullable: true })
   body: Record<string, any>;
+  
+  @Column({ type: 'jsonb', nullable: true })
+  authentication: AuthenticationPayload;
 
   @ManyToOne(() => RequestGroup, (group) => group.requests, {
     onDelete: 'CASCADE',
@@ -36,4 +48,7 @@ export class Request {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @UpdateDateColumn() 
+  updated_at: Date;
 }

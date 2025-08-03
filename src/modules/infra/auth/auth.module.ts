@@ -10,10 +10,10 @@ import { UserModule } from 'src/modules/user/user.module'; // 1. Importar o User
 @Module({
   imports: [
     ConfigModule,
-    UserModule, // 2. Adicionar UserModule aqui para ter acesso ao UserRepository
+    UserModule,
     PassportModule.register({ defaultStrategy: 'jwt' }),
     JwtModule.registerAsync({
-      imports: [ConfigModule], // 3. REMOVER UserRepository daqui
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         secret: configService.get<string>('JWT_SECRET'),
         signOptions: { expiresIn: '1d' },
