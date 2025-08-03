@@ -75,4 +75,11 @@ export class WorkspaceRepository {
       .getCount();
     return count > 0;
   }
+  async findManyByUserId(userId: string): Promise<Workspace[]> {
+    return this.repository.find({
+      where: { user: { id: Number(userId) } },
+      order: { created_at: 'DESC' },
+    });
+  }
 }
+

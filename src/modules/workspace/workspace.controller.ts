@@ -66,4 +66,11 @@ export class WorkspaceController {
   async remove(@Param('id') id: string): Promise<void> {
     return this.workspaceRepository.delete(id);
   }
+
+  @Get('user/:userId')
+  async findByUserId(
+    @Param('userId') userId: string)
+    : Promise<Workspace[]> {
+      return this.workspaceRepository.findManyByUserId(userId)
+    }
 }
